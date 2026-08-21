@@ -1,0 +1,277 @@
+{
+  "industry": "financial services",
+  "slug": "financial-services",
+  "greeting": {
+    "ar": "أهلاً بك، معك ليلى من خدمة العملاء. كيف أقدر أساعدك؟",
+    "en": "Hello, this is Layla in customer service. How can I help?"
+  },
+  "flows": [
+    {
+      "id": "onboard",
+      "name": "Client onboarding",
+      "promise": "Identity documents collected and checked before anyone picks up the phone.",
+      "kind": "call",
+      "beats": [
+        {
+          "at": 0.2,
+          "kind": "msg",
+          "who": "CALLER",
+          "ar": "أبغى أفتح حساب استثماري.",
+          "en": "I want to open an investment account."
+        },
+        {
+          "at": 2.4,
+          "kind": "tool",
+          "name": "kyc_prefill",
+          "args": "{ \"national_id\": \"•••4471\" }",
+          "result": "{ \"absher_verified\": true, \"prefilled_fields\": 11 }"
+        },
+        {
+          "at": 4.4,
+          "kind": "msg",
+          "who": "AGENT",
+          "ar": "تحققت من بياناتك. باقي بس مصدر الدخل ومستوى المخاطر.",
+          "en": "Your details are verified. I just need income source and risk appetite."
+        },
+        {
+          "at": 7.2,
+          "kind": "tool",
+          "name": "create_application",
+          "args": "{ \"product\": \"investment\", \"risk\": \"moderate\" }",
+          "result": "{ \"application_id\": \"APP-3320\", \"route\": \"advisor_review\" }"
+        }
+      ],
+      "outcome": [
+        [
+          "Application",
+          "APP-3320"
+        ],
+        [
+          "Fields pre-filled",
+          "11 of 14"
+        ],
+        [
+          "Adviser time saved",
+          "About 12 minutes"
+        ]
+      ]
+    },
+    {
+      "id": "qualify",
+      "name": "Lead qualification",
+      "promise": "Every enquiry answered and sent to the right adviser, none left waiting until Monday.",
+      "kind": "call",
+      "beats": [
+        {
+          "at": 0.2,
+          "kind": "msg",
+          "who": "CALLER",
+          "ar": "شفت إعلانكم عن التمويل العقاري، أبغى أعرف التفاصيل.",
+          "en": "I saw your mortgage advert — I want to know more."
+        },
+        {
+          "at": 2.8,
+          "kind": "tool",
+          "name": "qualify_lead",
+          "args": "{ \"product\": \"mortgage\", \"employment\": \"gov\", \"income_band\": \"20-30k\" }",
+          "result": "{ \"score\": 0.86, \"tier\": \"hot\", \"eligible\": true }"
+        },
+        {
+          "at": 5,
+          "kind": "msg",
+          "who": "AGENT",
+          "ar": "مؤهل مبدئياً. أحجز لك مكالمة مع مستشار بكرة؟",
+          "en": "You pre-qualify. Shall I book you with an advisor tomorrow?"
+        },
+        {
+          "at": 7.6,
+          "kind": "tool",
+          "name": "route_to_advisor",
+          "args": "{ \"tier\": \"hot\", \"slot\": \"tomorrow 11:00\" }",
+          "result": "{ \"assigned\": \"A-19\", \"crm_updated\": true }"
+        }
+      ],
+      "outcome": [
+        [
+          "Priority",
+          "High"
+        ],
+        [
+          "Sent to",
+          "Adviser A-19"
+        ],
+        [
+          "Customer record",
+          "Updated immediately"
+        ]
+      ]
+    },
+    {
+      "id": "statement",
+      "name": "Statement and portfolio",
+      "promise": "Everyday account questions answered straight away, in Saudi Arabic.",
+      "kind": "call",
+      "beats": [
+        {
+          "at": 0.2,
+          "kind": "msg",
+          "who": "CALLER",
+          "ar": "وش أداء محفظتي هالربع؟",
+          "en": "How did my portfolio do this quarter?"
+        },
+        {
+          "at": 2.4,
+          "kind": "tool",
+          "name": "get_portfolio",
+          "args": "{ \"customer_id\": \"C-2210\", \"period\": \"Q3\" }",
+          "result": "{ \"return_pct\": 4.2, \"best\": \"sukuk_fund\", \"worst\": \"reit\" }"
+        },
+        {
+          "at": 4.6,
+          "kind": "msg",
+          "who": "AGENT",
+          "ar": "محفظتك ارتفعت أربعة واثنين بالمية. أفضل أداء كان صندوق الصكوك.",
+          "en": "Your portfolio is up 4.2%. The sukuk fund performed best."
+        },
+        {
+          "at": 8,
+          "kind": "tool",
+          "name": "send_statement",
+          "args": "{ \"format\": \"pdf\", \"channel\": \"email\" }",
+          "result": "{ \"sent\": true }"
+        }
+      ],
+      "outcome": [
+        [
+          "Answered in",
+          "Under 5s"
+        ],
+        [
+          "Statement",
+          "Emailed"
+        ],
+        [
+          "Staff involved",
+          "None"
+        ]
+      ]
+    },
+    {
+      "id": "suitability",
+      "kind": "document",
+      "name": "Suitability pack review",
+      "promise": "Client paperwork checked for anything missing before it reaches compliance.",
+      "docName": "Suitability file",
+      "docKind": "Mixed PDF · 11 pages",
+      "hard": "Forms filled by hand, a risk questionnaire scored in the margin, and an income annex in a different currency.",
+      "page": {
+        "title": "Suitability file",
+        "subtitle": "Risk questionnaire · income annex",
+        "rows": 8,
+        "handwriting": "6 / 10"
+      },
+      "fields": [
+        {
+          "label": "risk_score",
+          "value": "Moderate (6/10)",
+          "confidence": 0.91,
+          "box": {
+            "x": 6,
+            "y": 14,
+            "w": 50,
+            "h": 8
+          }
+        },
+        {
+          "label": "investment_horizon_yrs",
+          "value": "7",
+          "confidence": 0.95,
+          "box": {
+            "x": 6,
+            "y": 26,
+            "w": 40,
+            "h": 7
+          }
+        },
+        {
+          "label": "declared_income_sar",
+          "value": "412000.00",
+          "confidence": 0.84,
+          "note": "Converted from USD at file date",
+          "box": {
+            "x": 56,
+            "y": 26,
+            "w": 38,
+            "h": 7
+          }
+        },
+        {
+          "label": "sophistication_flag",
+          "value": "retail",
+          "confidence": 0.97,
+          "box": {
+            "x": 6,
+            "y": 38,
+            "w": 88,
+            "h": 8
+          }
+        },
+        {
+          "label": "missing_documents",
+          "value": "proof_of_address",
+          "confidence": 0.99,
+          "note": "Blocks submission",
+          "box": {
+            "x": 6,
+            "y": 60,
+            "w": 60,
+            "h": 8
+          }
+        }
+      ],
+      "outcome": [
+        [
+          "Completeness",
+          "10 of 11"
+        ],
+        [
+          "Blocker",
+          "Surfaced upfront"
+        ],
+        [
+          "Compliance sending it back",
+          "Avoided"
+        ]
+      ]
+    },
+    {
+      "id": "advisor-note",
+      "kind": "dictation",
+      "name": "Advisor meeting note",
+      "promise": "The meeting write-up that eats an adviser’s evening, done on the drive home.",
+      "spoken": "اجتمعت مع العميل، يبغى يقلل المخاطرة بعد التقاعد، ناقشنا تحويل جزء للصكوك، ونحتاج مراجعة الملف بعد ستة أشهر",
+      "spokenEn": "Met the client, wants lower risk after retirement, we discussed moving part into sukuk, and we need a file review in six months.",
+      "polished": "Client review — retirement transition\n\nObjective: Reduce portfolio risk following retirement.\nDiscussed: Partial reallocation from equity into sukuk.\nAgreed: Reassess allocation at a six-month review.\nSuitability: Consistent with recorded moderate risk profile.",
+      "target": "Salesforce Financial Services Cloud",
+      "action": {
+        "name": "log_review_and_schedule",
+        "args": "{ \"client\": \"C-2210\", \"review_in_months\": 6 }",
+        "result": "{ \"note_id\": \"NT-8812\", \"review_scheduled\": \"2027-02-21\" }"
+      },
+      "outcome": [
+        [
+          "Note",
+          "Compliance-ready"
+        ],
+        [
+          "Review",
+          "Auto-scheduled"
+        ],
+        [
+          "Evening paperwork",
+          "Gone"
+        ]
+      ]
+    }
+  ]
+}
